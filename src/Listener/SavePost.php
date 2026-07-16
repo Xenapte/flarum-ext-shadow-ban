@@ -55,7 +55,7 @@ class SavePost
                 $discussion = Discussion::find($event->post->discussion_id);
 
                 // Don't shadow-hide the first post of a discussion since the discussion is already hidden in that situation
-                if ($discussion->post_number_index > 0) {
+                if ($discussion && ($discussion->last_post_number > 0 || $discussion->first_post_id !== null)) {
                     $event->post->shadow_hidden_at = Carbon::now();
 
                     // Manually dispatch the event here so we can keep $actor null to signal it was done automatically
